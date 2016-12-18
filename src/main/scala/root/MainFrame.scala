@@ -28,8 +28,10 @@ object MainFrame extends JFXApp with Components {
         vgap = 5
         add(slider, 10, 100)
         add(textFiled, 11, 100)
-        add(choiseBox, 4, 4)
+        add(choiceBox, 4, 4)
         add(imageView, 1, 1)
+        add(resultTextFiled, 12, 12)
+        add(button, 15, 15)
       }
     }
   }
