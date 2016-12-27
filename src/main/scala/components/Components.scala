@@ -1,25 +1,19 @@
 package components
 
-import utils.Constants._
-import utils.Logger
+import utils.Choices
+import utils.Implicits._
 import utils.RichDouble.DoubleExpansion
 
-import scala.annotation.implicitNotFound
 import scalafx.Includes._
-import scalafx.beans.property.DoubleProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ChoiceBox, Label, Slider, TextField}
 import scalafx.scene.image.ImageView
-
+import scalafx.scene.layout.Pane
 /**
   * Created by faiaz on 18.12.16.
   */
 
-@implicitNotFound("Not found implicit conversion for rounding in choice Box")
-object Components extends Logger {
-
-  //val url = this.getClass.getResource("file:image.png").toExternalForm
-  @volatile var coefficient = DoubleProperty(1)
+object Components {
 
   val slider = new Slider(0, 100, 0) {
     minWidth = 400.0
@@ -29,7 +23,7 @@ object Components extends Logger {
   }
 
   slider.value.onChange((_, _, newValue) => {
-    resultTextFiled.setText((newValue.doubleValue * coefficient()).roundAndReturnString)
+    resultTextFiled.setText((newValue.doubleValue * getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get()))).roundAndReturnString)
     sliderTextFiled.setText(newValue.doubleValue.roundAndReturnString)
   })
 
@@ -46,27 +40,35 @@ object Components extends Logger {
   val choiceBox = new ChoiceBox[String] {
     maxWidth = 80
     maxHeight = 30
-    items = ObservableBuffer(choice_1, choice_2, choice_3)
+    items = ObservableBuffer(Choices.QUARTZ, Choices.SILICON, Choices.TOURMALINE)
     selectionModel().selectFirst()
     selectionModel().selectedItem.onChange(
-      (_, _, newValue) => newValue match {
-        case `choice_1` =>
-          log.info(s"$choice_1 is called, coefficient = ${Constant1()}")
-          coefficient = Constant1
-          resultTextFiled.setText((coefficient() * slider.value()).roundAndReturnString)
-        case `choice_2` =>
-          log.info(s"$choice_2 is called, coefficient = ${Constant2()}")
-          coefficient = Constant2
-          resultTextFiled.setText((coefficient() * slider.value()).roundAndReturnString)
-        case `choice_3` =>
-          log.info(s"$choice_3 is called, coefficient = ${Constant3()}")
-          coefficient = Constant3
-          resultTextFiled.setText((coefficient() * slider.value()).roundAndReturnString)
+      (_, _, newValue) => Choices.withName(newValue) match {
+        case Choices.QUARTZ =>
+          val quartz = Choices.QUARTZ
+          resultTextFiled.setText((getCoefficient(quartz) * slider.value()).roundAndReturnString)
+        case Choices.SILICON =>
+          val silicon = Choices.SILICON
+          resultTextFiled.setText((getCoefficient(silicon) * slider.value()).roundAndReturnString)
+        case Choices.TOURMALINE =>
+          val tourmaline = Choices.TOURMALINE
+          resultTextFiled.setText((getCoefficient(tourmaline) * slider.value()).roundAndReturnString)
       }
     )
+  }
+
+  val choiceBoxPanel = new Pane {
+    children = Seq(choiceBox)
   }
 
   val imageView = new ImageView("image.png")
 
   def label(text: String) = new Label(text)
+
+  def getCoefficient(choice: Choices.Value): Double = choice match {
+    case Choices.QUARTZ => 2.0
+    case Choices.TOURMALINE => 3.0
+    case Choices.SILICON => 4.0
+    case _ => 1.0
+  }
 }
