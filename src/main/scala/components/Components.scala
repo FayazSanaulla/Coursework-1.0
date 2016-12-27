@@ -4,17 +4,21 @@ import utils.Constants._
 import utils.Logger
 import utils.RichDouble.DoubleExpansion
 
+import scala.annotation.implicitNotFound
 import scalafx.Includes._
 import scalafx.beans.property.DoubleProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.{ChoiceBox, Slider, TextField}
-import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.control.{ChoiceBox, Label, Slider, TextField}
+import scalafx.scene.image.ImageView
 
 /**
   * Created by faiaz on 18.12.16.
   */
+
+@implicitNotFound("Not found implicit conversion for rounding in choice Box")
 object Components extends Logger {
 
+  //val url = this.getClass.getResource("file:image.png").toExternalForm
   @volatile var coefficient = DoubleProperty(1)
 
   val slider = new Slider(0, 100, 0) {
@@ -31,15 +35,17 @@ object Components extends Logger {
 
   val sliderTextFiled = new TextField {
     editable = false
+    maxWidth = 70
   }
 
   val resultTextFiled = new TextField {
     editable = false
+    maxWidth = 70
   }
 
   val choiceBox = new ChoiceBox[String] {
     maxWidth = 80
-    maxHeight = 50
+    maxHeight = 30
     items = ObservableBuffer(choice_1, choice_2, choice_3)
     selectionModel().selectFirst()
     selectionModel().selectedItem.onChange(
@@ -60,10 +66,7 @@ object Components extends Logger {
     )
   }
 
-  val imageView = new ImageView {
-    // image = new Image(getClass.getResource("epsya.jpg").toExternalForm)
-    // image = new Image("file:image.png")
-    image = new Image("http://www.scala-lang.org/resources/img/scala-logo.png")
-  }
+  val imageView = new ImageView("image.png")
 
+  def label(text: String) = new Label(text)
 }
