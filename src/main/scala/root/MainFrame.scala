@@ -28,8 +28,10 @@ object MainFrame extends JFXApp {
         add(label("Вхід"), 5, 14)
         add(sliderTextFiled, 5, 15)
 
+        //add(temp, 12, 13)
+
         add(label("Можливі варіанти"), 5, 1)
-        add(choiceBoxPanel, 5, 2)
+        add(vbox, 5, 2)
 
         add(label("Схематичне зображення"), 10, 1)
         add(imageView, 10, 2)
