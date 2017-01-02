@@ -6,7 +6,7 @@ import utils.RichDouble.DoubleExpansion
 
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.{Insets, Orientation, Pos}
+import scalafx.geometry.{Insets, Orientation}
 import scalafx.scene.control.{ChoiceBox, Label, Slider, TextField}
 import scalafx.scene.image.ImageView
 import scalafx.scene.layout.{HBox, Pane, VBox}
@@ -37,14 +37,14 @@ object Components {
   /**
     * Temperature slider
     */
-  val temp = new Slider(0, 100, 0) {
+  val temperature = new Slider(0, 100, 0) {
     minorTickCount = 4
     showTickLabels = true
     showTickMarks = true
     orientation = Orientation.Vertical
   }
 
-  temp.value.onChange((_, _, newValue) => {
+  temperature.value.onChange((_, _, newValue) => {
     resultTextFiled.setText((
         getTemperature(newValue.doubleValue) *
         slider.value() *
@@ -63,24 +63,28 @@ object Components {
   }
 
   slider.value.onChange((_, _, newValue) => {
-    resultTextFiled.setText((newValue.doubleValue * getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get()))).roundAndReturnString)
+    resultTextFiled.setText(
+      (newValue.doubleValue *
+        getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
+        getPressure(pressure.value()) *
+        getTemperature(temperature.value())).roundAndReturnString)
     sliderTextFiled.setText(newValue.doubleValue.roundAndReturnString)
   })
 
   val sliderTextFiled = new TextField {
     editable = false
     maxWidth = 70
-    text = "0.0"
+    text = "0.00"
   }
 
   val resultTextFiled = new TextField {
     editable = false
     maxWidth = 70
-    text = "0.0"
+    text = "0.00"
   }
 
   val choiceBox = new ChoiceBox[String] {
-    maxWidth = 80
+    maxWidth = 100
     maxHeight = 30
     items = ObservableBuffer(Choices.QUARTZ, Choices.SILICON, Choices.TOURMALINE)
     selectionModel().selectFirst()
@@ -100,18 +104,16 @@ object Components {
   }
 
   val choiceBoxPanel = new Pane {
-    children = Seq(choiceBox, temp, pressure)
+    children = Seq(choiceBox, temperature, pressure)
   }
 
   val vbox = new VBox {
-
     children = Seq(
       choiceBox,
       new HBox {
         padding = Insets(20)
         spacing = 0
-        alignment = Pos.TopLeft
-        children = Seq(temp, pressure)
+        children = Seq(temperature, pressure)
       })
   }
 

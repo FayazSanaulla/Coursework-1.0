@@ -5,9 +5,9 @@ package utils
   */
 object Choices extends Enumeration {
   type Choice = Value
-  val SILICON = Value("Silicon")
-  val QUARTZ = Value("Quartz")
-  val TOURMALINE = Value("Tourmaline")
+  val SILICON = Value("Кремній")
+  val QUARTZ = Value("Кварц")
+  val TOURMALINE = Value("Турмалін")
 }
 
 
