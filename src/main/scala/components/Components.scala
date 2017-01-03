@@ -28,10 +28,10 @@ object Components {
 
   pressure.value.onChange((_, _, newValue) => {
     resultTextFiled.setText((
-      getPressure(newValue.doubleValue) *
+        getPressure(newValue.doubleValue) *
         slider.value() *
         getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getTemperature(pressure.value())).roundAndReturnString)
+        getTemperature(temperature.value())).roundAndReturnString)
   })
 
   /**
@@ -92,13 +92,13 @@ object Components {
       (_, _, newValue) => Choices.withName(newValue) match {
         case Choices.QUARTZ =>
           val quartz = Choices.QUARTZ
-          resultTextFiled.setText((getCoefficient(quartz) * slider.value()).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(quartz) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
         case Choices.SILICON =>
           val silicon = Choices.SILICON
-          resultTextFiled.setText((getCoefficient(silicon) * slider.value()).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(silicon) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
         case Choices.TOURMALINE =>
           val tourmaline = Choices.TOURMALINE
-          resultTextFiled.setText((getCoefficient(tourmaline) * slider.value()).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(tourmaline) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
       }
     )
   }
