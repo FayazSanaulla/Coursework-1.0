@@ -14,7 +14,7 @@ object MainFrame extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
     title = "П'єзоелектричний перетворювач тиску"
-    scene = new Scene(850, 700) {
+    scene = new Scene(900, 700) {
       resizable = false
 
       root = new GridPane {

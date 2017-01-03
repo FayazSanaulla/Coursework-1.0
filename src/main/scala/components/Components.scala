@@ -112,8 +112,14 @@ object Components {
       choiceBox,
       new HBox {
         padding = Insets(20)
-        spacing = 0
-        children = Seq(temperature, pressure)
+        spacing = 5
+        children = Seq(
+          new VBox {
+            children = Seq(label("Температура"), temperature)
+          },
+          new VBox {
+            children = Seq(label("Тиск"), pressure)
+          })
       })
   }
 
