@@ -45,12 +45,9 @@ class ChartStage extends Stage {
         }
       }
 
-  private def getData(str: String) = {
-    println("Getting data")
-    str match {
+  private def getData(str: String) = str match {
       case "Турмалін" => Components.tourmalineArr
       case "Кварц" => Components.quartzArr
       case "Титан" => Components.titanArr
-    }
   }
 }
