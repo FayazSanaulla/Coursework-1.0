@@ -1,13 +1,17 @@
 package components
 
+import stages.ChartStage
 import utils.Choices
+import utils.ChoicesValue._
 import utils.Implicits._
 import utils.RichDouble.DoubleExpansion
 
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Orientation}
-import scalafx.scene.control.{ChoiceBox, Label, Slider, TextField}
+import scalafx.scene.control._
 import scalafx.scene.image.ImageView
 import scalafx.scene.layout.{HBox, Pane, VBox}
 /**
@@ -15,6 +19,13 @@ import scalafx.scene.layout.{HBox, Pane, VBox}
   */
 
 object Components {
+
+  type Pair = (Double, Double)
+
+  val quartzArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+  val tourmalineArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+  val titanArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+
 
   /**
     * Pressure slider
@@ -45,6 +56,7 @@ object Components {
   }
 
   temperature.value.onChange((_, _, newValue) => {
+
     resultTextFiled.setText((
         getTemperature(newValue.doubleValue) *
         slider.value() *
@@ -63,12 +75,19 @@ object Components {
   }
 
   slider.value.onChange((_, _, newValue) => {
-    resultTextFiled.setText(
-      (newValue.doubleValue *
-        getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getPressure(pressure.value()) *
-        getTemperature(temperature.value())).roundAndReturnString)
-    sliderTextFiled.setText(newValue.doubleValue.roundAndReturnString)
+    val coef = getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get()))
+    val inputValue = newValue.doubleValue
+    val outputValue = newValue.doubleValue * coef * getPressure(pressure.value()) * getTemperature(temperature.value())
+    val pair = (inputValue, outputValue)
+
+    coef match {
+      case `quartzValue` => quartzArr += pair
+      case `titanValue` => titanArr += pair
+      case `tourmalineValue` => tourmalineArr += pair
+    }
+
+    resultTextFiled.setText(outputValue.roundAndReturnString)
+    sliderTextFiled.setText(inputValue.roundAndReturnString)
   })
 
   val sliderTextFiled = new TextField {
@@ -86,18 +105,21 @@ object Components {
   val choiceBox = new ChoiceBox[String] {
     maxWidth = 100
     maxHeight = 30
-    items = ObservableBuffer(Choices.QUARTZ, Choices.NIOBATE, Choices.TOURMALINE)
+    items = ObservableBuffer(Choices.QUARTZ, Choices.TITAN, Choices.TOURMALINE)
     selectionModel().selectFirst()
     selectionModel().selectedItem.onChange(
       (_, _, newValue) => Choices.withName(newValue) match {
         case Choices.QUARTZ =>
           val quartz = Choices.QUARTZ
+          slider.value = 0.00
           resultTextFiled.setText((getCoefficient(quartz) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
-        case Choices.NIOBATE =>
-          val silicon = Choices.NIOBATE
+        case Choices.TITAN =>
+          val silicon = Choices.TITAN
+          slider.value = 0.00
           resultTextFiled.setText((getCoefficient(silicon) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
         case Choices.TOURMALINE =>
           val tourmaline = Choices.TOURMALINE
+          slider.value = 0.00
           resultTextFiled.setText((getCoefficient(tourmaline) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
       }
     )
@@ -120,6 +142,9 @@ object Components {
           new VBox {
             children = Seq(label("Тиск"), pressure)
           })
+      },
+      new Button("Побудувати графік") {
+        onAction = handle(ChartStage.showAndWait())
       })
   }
 
@@ -128,9 +153,9 @@ object Components {
   def label(text: String) = new Label(text)
 
   private def getCoefficient(choice: Choices.Value): Double = choice match {
-    case Choices.QUARTZ => 0.9
-    case Choices.TOURMALINE => 1.25
-    case Choices.NIOBATE => 1.5
+    case Choices.QUARTZ => quartzValue
+    case Choices.TOURMALINE => tourmalineValue
+    case Choices.TITAN => titanValue
     case _ => 1.0
   }
 
@@ -144,7 +169,10 @@ object Components {
   }
 
   private def getPressure(value: Double): Double = value match {
-    case value: Double if value >= 0.0 && value <= 30.0 => 1.0
+    case value: Double if value >= 0.0 && value < 30.0 => 1.0
+    case value: Double if value >= 30.0 && value < 35.0 => 0.9
+    case value: Double if value >= 35.0 && value < 40.0 => 0.8
+    case value: Double if value >= 45.0 && value <= 50.0 => 0.7
     case _ => 0.7
   }
 }
