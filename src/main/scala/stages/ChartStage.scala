@@ -10,20 +10,20 @@ import scalafx.stage.Stage
 /**
   * Created by faiaz on 03.01.17.
   */
-object ChartStage extends Stage {
+class ChartStage extends Stage {
 
   val quartz = "Кварц"
   val titan = "Титан"
   val tourmaline = "Турмалін"
+  resizable = false
 
       title = "Графік"
       scene = new Scene {
         root = {
 
-          val xAxis = NumberAxis("Сила звуку", 0, 100, 10)
-          val yAxis = NumberAxis("Заряд", 0, 100, 10)
+          val xAxis = NumberAxis("Сила звуку", 0, 150, 10)
+          val yAxis = NumberAxis("Заряд", 0, 150, 10)
 
-          // Helper function to convert a tuple to `XYChart.Data`
           val toChartData = (xy: (Double, Double)) => XYChart.Data[Number, Number](xy._1, xy._2)
 
           val series1 = new XYChart.Series[Number, Number] {
@@ -45,9 +45,12 @@ object ChartStage extends Stage {
         }
       }
 
-  private def getData(str: String) = str match {
-    case "Турмалін" => Components.tourmalineArr
-    case "Кварц" => Components.quartzArr
-    case "Титан" => Components.titanArr
+  private def getData(str: String) = {
+    println("Getting data")
+    str match {
+      case "Турмалін" => Components.tourmalineArr
+      case "Кварц" => Components.quartzArr
+      case "Титан" => Components.titanArr
+    }
   }
 }

@@ -144,7 +144,7 @@ object Components {
           })
       },
       new Button("Побудувати графік") {
-        onAction = handle(ChartStage.showAndWait())
+        onAction = handle(new ChartStage().showAndWait())
       })
   }
 
