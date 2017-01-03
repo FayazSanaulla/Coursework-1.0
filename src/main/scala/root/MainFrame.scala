@@ -14,7 +14,7 @@ object MainFrame extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
     title = "П'єзоелектричний перетворювач тиску"
-    scene = new Scene(800, 700) {
+    scene = new Scene(850, 700) {
       resizable = false
 
       root = new GridPane {
@@ -25,7 +25,7 @@ object MainFrame extends JFXApp {
         add(label("Шкала"), 10, 15)
         add(slider, 10, 16)
 
-        add(label("Вхід"), 5, 14)
+        add(label("Вхід в Децибелах"), 5, 14)
         add(sliderTextFiled, 5, 15)
 
         add(label("П'єзоелектрики"), 5, 1)
@@ -34,7 +34,7 @@ object MainFrame extends JFXApp {
         add(label("Схематичне зображення"), 10, 1)
         add(imageView, 10, 2)
 
-        add(label("Вихід"), 12, 14)
+        add(label("Вихідна напруга"), 12, 14)
         add(resultTextFiled, 12, 15)
       }
     }

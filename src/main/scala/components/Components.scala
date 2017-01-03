@@ -86,15 +86,15 @@ object Components {
   val choiceBox = new ChoiceBox[String] {
     maxWidth = 100
     maxHeight = 30
-    items = ObservableBuffer(Choices.QUARTZ, Choices.SILICON, Choices.TOURMALINE)
+    items = ObservableBuffer(Choices.QUARTZ, Choices.NIOBATE, Choices.TOURMALINE)
     selectionModel().selectFirst()
     selectionModel().selectedItem.onChange(
       (_, _, newValue) => Choices.withName(newValue) match {
         case Choices.QUARTZ =>
           val quartz = Choices.QUARTZ
           resultTextFiled.setText((getCoefficient(quartz) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
-        case Choices.SILICON =>
-          val silicon = Choices.SILICON
+        case Choices.NIOBATE =>
+          val silicon = Choices.NIOBATE
           resultTextFiled.setText((getCoefficient(silicon) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
         case Choices.TOURMALINE =>
           val tourmaline = Choices.TOURMALINE
@@ -122,9 +122,9 @@ object Components {
   def label(text: String) = new Label(text)
 
   private def getCoefficient(choice: Choices.Value): Double = choice match {
-    case Choices.QUARTZ => 2.0
-    case Choices.TOURMALINE => 3.0
-    case Choices.SILICON => 4.0
+    case Choices.QUARTZ => 0.9
+    case Choices.TOURMALINE => 1.25
+    case Choices.NIOBATE => 1.5
     case _ => 1.0
   }
 
