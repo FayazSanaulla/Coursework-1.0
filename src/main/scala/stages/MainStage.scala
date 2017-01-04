@@ -34,7 +34,7 @@ object MainStage extends JFXApp {
         add(label("Схематичне зображення"), 10, 1)
         add(imageView, 10, 2)
 
-        add(label("Вихідний заряд"), 12, 14)
+        add(label("Вихідна напруга"), 12, 14)
         add(resultTextFiled, 12, 15)
       }
     }

@@ -130,6 +130,7 @@ object Components {
   }
 
   val vbox = new VBox {
+    spacing = 5
     children = Seq(
       choiceBox,
       new HBox {
@@ -145,6 +146,13 @@ object Components {
       },
       new Button("Побудувати графік") {
         onAction = handle(new ChartStage().showAndWait())
+      },
+      new Button("Очистити дані") {
+        onAction = handle({
+          quartzArr.clear()
+          tourmalineArr.clear()
+          titanArr.clear()
+        })
       })
   }
 
