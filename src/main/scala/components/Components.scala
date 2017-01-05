@@ -38,11 +38,16 @@ object Components {
   }
 
   pressure.value.onChange((_, _, newValue) => {
-    resultTextFiled.setText((
+    if (slider.value() == 0.0) resultTextFiled.setText("0.00")
+    else {
+      resultTextFiled.setText((
         getPressure(newValue.doubleValue) *
-        slider.value() *
-        getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getTemperature(temperature.value())).roundAndReturnString())
+          soundPower(slider.value()) *
+          getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
+          getTemperature(temperature.value()))
+        .toString.roundingString)
+
+    }
   })
 
   /**
@@ -56,12 +61,15 @@ object Components {
   }
 
   temperature.value.onChange((_, _, newValue) => {
-
-    resultTextFiled.setText((
+    if (slider.value() == 0.0) resultTextFiled.setText("0.00")
+    else {
+      resultTextFiled.setText((
         getTemperature(newValue.doubleValue) *
-        slider.value() *
-        getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getPressure(pressure.value())).roundAndReturnString())
+          soundPower(slider.value()) *
+          getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
+          getPressure(pressure.value()))
+        .toString.roundingString)
+    }
   })
 
   /**
@@ -81,7 +89,7 @@ object Components {
       soundPower(newValue.doubleValue) *
       coef * getPressure(pressure.value()) *
       getTemperature(temperature.value())
-    val forTable = outputValue.toString.roundStringDouble.toDouble
+    val forTable = outputValue.toString.roundingString.toDouble
 
     coef match {
       case `quartzValue` => quartzArr += new Quartz(inputValue, forTable)
@@ -89,7 +97,7 @@ object Components {
       case `tourmalineValue` => tourmalineArr += new Tourmaline(inputValue, forTable)
     }
 
-    resultTextFiled.setText(outputValue.toString.roundStringDouble)
+    resultTextFiled.setText(outputValue.toString.roundingString)
     sliderTextFiled.setText(inputValue.roundAndReturnString())
   })
 
@@ -101,7 +109,7 @@ object Components {
 
   val resultTextFiled = new TextField {
     editable = false
-    maxWidth = 200
+    maxWidth = 100
     text = "0.00"
   }
 

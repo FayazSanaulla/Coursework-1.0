@@ -7,7 +7,8 @@ import utils.RichDouble.DoubleExpansion
   */
 object RichString {
   implicit class StringExpansion(string: String) {
-    def roundStringDouble: String = {
+
+    def roundingString: String = {
       val sep = "E"
       val arr = string.split(sep)
       arr(0).toDouble.roundAndReturnString(5) + sep + arr(1)

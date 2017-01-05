@@ -26,12 +26,12 @@ class TableStage extends Stage {
         new TableView[Quartz](quartzObs) {
           columns ++= List(
             new TableColumn[Quartz, String] {
-              text = "Input"
+              text = "Вхідні"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Quartz, String] {
-              text = "Output"
+              text = "Вихідні"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }
@@ -41,12 +41,12 @@ class TableStage extends Stage {
         new TableView[Titan](titanObs) {
           columns ++= List(
             new TableColumn[Titan, String] {
-              text = "Input"
+              text = "Вхідні"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Titan, String] {
-              text = "Output"
+              text = "Вихідні"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }
@@ -56,12 +56,12 @@ class TableStage extends Stage {
         new TableView[Tourmaline](tourmalineObs) {
           columns ++= List(
             new TableColumn[Tourmaline, String] {
-              text = "Input"
+              text = "Вхідні"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Tourmaline, String] {
-              text = "Output"
+              text = "Вихідні"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }
