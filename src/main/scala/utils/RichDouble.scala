@@ -5,6 +5,6 @@ package utils
   */
 object RichDouble {
   implicit class DoubleExpansion(double: Double) {
-    def roundAndReturnString: String = BigDecimal(double).setScale(2, BigDecimal.RoundingMode.HALF_UP).toString()
+    def roundAndReturnString(scale: Int = 2): String = BigDecimal(double).setScale(scale, BigDecimal.RoundingMode.HALF_UP).toString()
   }
 }

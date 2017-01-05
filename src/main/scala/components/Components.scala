@@ -1,14 +1,13 @@
 package components
 
 import math.Math.soundPower
-import stages.ChartStage
-import utils.Choices
+import stages.TableStage
 import utils.ChoicesValue._
 import utils.Implicits._
 import utils.RichDouble.DoubleExpansion
+import utils.RichString.StringExpansion
+import utils.{Choices, Quartz, Titan, Tourmaline}
 
-import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Orientation}
@@ -23,9 +22,9 @@ object Components {
 
   type Pair = (Double, Double)
 
-  val quartzArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
-  val tourmalineArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
-  val titanArr: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+  val quartzArr: ObservableBuffer[Quartz] = ObservableBuffer[Quartz]()
+  val tourmalineArr: ObservableBuffer[Tourmaline] = ObservableBuffer[Tourmaline]()
+  val titanArr: ObservableBuffer[Titan] = ObservableBuffer[Titan]()
 
 
   /**
@@ -43,7 +42,7 @@ object Components {
         getPressure(newValue.doubleValue) *
         slider.value() *
         getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getTemperature(temperature.value())).roundAndReturnString)
+        getTemperature(temperature.value())).roundAndReturnString())
   })
 
   /**
@@ -62,7 +61,7 @@ object Components {
         getTemperature(newValue.doubleValue) *
         slider.value() *
         getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-        getPressure(pressure.value())).roundAndReturnString)
+        getPressure(pressure.value())).roundAndReturnString())
   })
 
   /**
@@ -78,17 +77,20 @@ object Components {
   slider.value.onChange((_, _, newValue) => {
     val coef = getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get()))
     val inputValue = newValue.doubleValue
-    val outputValue = soundPower(newValue.doubleValue) * coef * getPressure(pressure.value()) * getTemperature(temperature.value())
-    val pair = (inputValue, outputValue)
+    val outputValue =
+      soundPower(newValue.doubleValue) *
+      coef * getPressure(pressure.value()) *
+      getTemperature(temperature.value())
+    val forTable = outputValue.toString.roundStringDouble.toDouble
 
     coef match {
-      case `quartzValue` => quartzArr += pair
-      case `titanValue` => titanArr += pair
-      case `tourmalineValue` => tourmalineArr += pair
+      case `quartzValue` => quartzArr += new Quartz(inputValue, forTable)
+      case `titanValue` => titanArr += new Titan(inputValue, forTable)
+      case `tourmalineValue` => tourmalineArr += new Tourmaline(inputValue, forTable)
     }
 
-    resultTextFiled.setText(outputValue.toString)
-    sliderTextFiled.setText(inputValue.roundAndReturnString)
+    resultTextFiled.setText(outputValue.toString.roundStringDouble)
+    sliderTextFiled.setText(inputValue.roundAndReturnString())
   })
 
   val sliderTextFiled = new TextField {
@@ -113,15 +115,15 @@ object Components {
         case Choices.QUARTZ =>
           val quartz = Choices.QUARTZ
           slider.value = 0.00
-          resultTextFiled.setText((getCoefficient(quartz) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(quartz) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString())
         case Choices.TITAN =>
           val silicon = Choices.TITAN
           slider.value = 0.00
-          resultTextFiled.setText((getCoefficient(silicon) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(silicon) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString())
         case Choices.TOURMALINE =>
           val tourmaline = Choices.TOURMALINE
           slider.value = 0.00
-          resultTextFiled.setText((getCoefficient(tourmaline) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString)
+          resultTextFiled.setText((getCoefficient(tourmaline) * slider.value() * getTemperature(temperature.value()) * getPressure(pressure.value())).roundAndReturnString())
       }
     )
   }
@@ -146,7 +148,7 @@ object Components {
           })
       },
       new Button("Побудувати графік") {
-        onAction = handle(new ChartStage().showAndWait())
+        onAction = handle(new TableStage().showAndWait())
       },
       new Button("Очистити дані") {
         onAction = handle({
