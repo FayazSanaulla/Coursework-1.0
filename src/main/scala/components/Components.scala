@@ -147,7 +147,7 @@ object Components {
             children = Seq(label("Тиск"), pressure)
           })
       },
-      new Button("Побудувати графік") {
+      new Button("Таблиця результатів") {
         onAction = handle(new TableStage().showAndWait())
       },
       new Button("Очистити дані") {
