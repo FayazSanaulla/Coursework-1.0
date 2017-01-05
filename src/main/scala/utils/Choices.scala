@@ -1,5 +1,7 @@
 package utils
 
+import scala.math.pow
+
 /**
   * Created by faiaz on 27.12.16.
   */
@@ -11,8 +13,8 @@ object Choices extends Enumeration {
 }
 
 object ChoicesValue {
-  val quartzValue = 0.9
-  val titanValue = 1.25
+  val quartzValue: Double = 2.3 * pow(10, -12)
+  val titanValue: Double = 100 * pow(10, -12)
   val tourmalineValue = 1.5
 }
 

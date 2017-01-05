@@ -1,5 +1,6 @@
 package components
 
+import math.Math.soundPower
 import stages.ChartStage
 import utils.Choices
 import utils.ChoicesValue._
@@ -77,7 +78,7 @@ object Components {
   slider.value.onChange((_, _, newValue) => {
     val coef = getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get()))
     val inputValue = newValue.doubleValue
-    val outputValue = newValue.doubleValue * coef * getPressure(pressure.value()) * getTemperature(temperature.value())
+    val outputValue = soundPower(newValue.doubleValue) * coef * getPressure(pressure.value()) * getTemperature(temperature.value())
     val pair = (inputValue, outputValue)
 
     coef match {
@@ -86,7 +87,7 @@ object Components {
       case `tourmalineValue` => tourmalineArr += pair
     }
 
-    resultTextFiled.setText(outputValue.roundAndReturnString)
+    resultTextFiled.setText(outputValue.toString)
     sliderTextFiled.setText(inputValue.roundAndReturnString)
   })
 
@@ -98,7 +99,7 @@ object Components {
 
   val resultTextFiled = new TextField {
     editable = false
-    maxWidth = 70
+    maxWidth = 200
     text = "0.00"
   }
 

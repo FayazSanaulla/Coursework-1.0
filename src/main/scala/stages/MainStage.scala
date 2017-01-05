@@ -14,7 +14,7 @@ object MainStage extends JFXApp {
 
   stage = new JFXApp.PrimaryStage {
     title = "П'єзоелектричний перетворювач тиску"
-    scene = new Scene(900, 700) {
+    scene = new Scene(1000, 700) {
       resizable = false
 
       root = new GridPane {
@@ -34,7 +34,7 @@ object MainStage extends JFXApp {
         add(label("Схематичне зображення"), 10, 1)
         add(imageView, 10, 2)
 
-        add(label("Вихідна напруга"), 12, 14)
+        add(label("Вихідний заряд"), 12, 14)
         add(resultTextFiled, 12, 15)
       }
     }

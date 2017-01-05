@@ -1,6 +1,7 @@
 package stages
 
 import components.Components
+import utils.RichDouble.DoubleExpansion
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.Scene
@@ -17,7 +18,9 @@ class ChartStage extends Stage {
   val tourmaline = "Турмалін"
   resizable = false
 
-      title = "Графік"
+      title = s"Графік(" +
+        s"t: ${Components.temperature.value().roundAndReturnString}," +
+        s" p: ${Components.pressure.value().roundAndReturnString})"
       scene = new Scene {
         root = {
 
