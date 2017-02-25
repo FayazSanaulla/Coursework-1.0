@@ -1,7 +1,7 @@
 package stages
 
 import components.Components
-import utils.{Quartz, Titan, Tourmaline}
+import utils.{Piezoceramic, Quartz, Titan}
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.Scene
@@ -17,7 +17,7 @@ class TableStage extends Stage {
 
   val quartzObs: ObservableBuffer[Quartz] = Components.quartzArr
   val titanObs: ObservableBuffer[Titan] = Components.titanArr
-  val tourmalineObs: ObservableBuffer[Tourmaline] = Components.tourmalineArr
+  val tourmalineObs: ObservableBuffer[Piezoceramic] = Components.piezoceramicArr
 
   scene = new Scene {
     content = new HBox {
@@ -53,14 +53,14 @@ class TableStage extends Stage {
           )
         },
         //TOURMALINE
-        new TableView[Tourmaline](tourmalineObs) {
+        new TableView[Piezoceramic](tourmalineObs) {
           columns ++= List(
-            new TableColumn[Tourmaline, String] {
+            new TableColumn[Piezoceramic, String] {
               text = "Вхідні"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
-            new TableColumn[Tourmaline, String] {
+            new TableColumn[Piezoceramic, String] {
               text = "Вихідні"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
@@ -68,7 +68,6 @@ class TableStage extends Stage {
           )
         }
       )
-
+    }
   }
-}
 }

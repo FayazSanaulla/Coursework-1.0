@@ -22,10 +22,10 @@ object MainStage extends JFXApp {
         hgap = 5
         vgap = 5
 
-        add(label("Шкала"), 10, 15)
+        add(label("F, (H)"), 10, 15)
         add(slider, 10, 16)
 
-        add(label("Вхід в Децибелах"), 5, 14)
+        add(label("Вхідна сила"), 5, 14)
         add(sliderTextFiled, 5, 15)
 
         add(label("П'єзоелектрики"), 5, 1)
@@ -34,7 +34,7 @@ object MainStage extends JFXApp {
         add(label("Схематичне зображення"), 10, 1)
         add(imageView, 10, 2)
 
-        add(label("Вихідний заряд"), 12, 14)
+        add(label("Вихідна напруга"), 12, 14)
         add(resultTextFiled, 12, 15)
       }
     }

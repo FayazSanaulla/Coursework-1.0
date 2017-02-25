@@ -10,13 +10,17 @@ object Choices extends Enumeration {
   type Choice = Value
   val TITAN = Value("Титанат Барію")
   val QUARTZ = Value("Кварц")
-  val TOURMALINE = Value("Турмалін")
+  val PIEZOCARAMIC = Value("Пєзокераміка")
 }
 
-object ChoicesValue {
-  val quartzValue: Double = 2.3 * pow(10, -12)
-  val titanValue: Double = 100 * pow(10, -12)
-  val tourmalineValue = 1.5
+object Piezomodule {
+  final val quartzModule: Double = 2.3 * pow(10, -12)
+  final val titanModule: Double = 100 * pow(10, -12)
+  final val piezoceramicModule: Double = pow(10, -10)
+}
+
+object Environment {
+  final val capacitor: Double = 2.4 * pow(10, -9)
 }
 
 class Quartz(input: Double, output: Double) {
@@ -28,7 +32,7 @@ class Titan(input: Double, output: Double) {
   val outputVal = new StringProperty(this, "output", output.toString)
 }
 
-class Tourmaline(input: Double, output: Double) {
+class Piezoceramic(input: Double, output: Double) {
   val inputVal = new StringProperty(this, "input" , input.toString)
   val outputVal = new StringProperty(this, "output", output.toString)
 }
