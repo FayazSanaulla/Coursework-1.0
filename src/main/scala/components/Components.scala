@@ -157,7 +157,7 @@ object Components {
       })
   }
 
-  val imageView = new ImageView("image.png")
+  val imageView = new ImageView("2.png")
 
   def label(text: String) = new Label(text)
 

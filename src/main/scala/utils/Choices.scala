@@ -14,8 +14,8 @@ object Choices extends Enumeration {
 }
 
 object Piezomodule {
-  final val quartzModule: Double = 2.3 * pow(10, -12)
-  final val titanModule: Double = 100 * pow(10, -12)
+  final val quartzModule: Double = 0.23 * pow(10, -10)
+  final val titanModule: Double = 0.45 * pow(10, -10)
   final val piezoceramicModule: Double = pow(10, -10)
 }
 
