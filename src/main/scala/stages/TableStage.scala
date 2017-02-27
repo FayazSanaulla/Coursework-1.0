@@ -15,9 +15,9 @@ import scalafx.stage.Stage
   */
 class TableStage extends Stage {
 
-  val quartzObs: ObservableBuffer[Quartz] = Components.quartzArr
-  val titanObs: ObservableBuffer[Titan] = Components.titanArr
-  val tourmalineObs: ObservableBuffer[Piezoceramic] = Components.piezoceramicArr
+  val quartzObs: ObservableBuffer[Quartz] = Components.quartzTable
+  val titanObs: ObservableBuffer[Titan] = Components.titanTable
+  val tourmalineObs: ObservableBuffer[Piezoceramic] = Components.piezoceramicTable
 
   scene = new Scene {
     content = new HBox {
@@ -26,12 +26,12 @@ class TableStage extends Stage {
         new TableView[Quartz](quartzObs) {
           columns ++= List(
             new TableColumn[Quartz, String] {
-              text = "Вхідні"
+              text = "Сила, F"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Quartz, String] {
-              text = "Вихідні"
+              text = "Напруга, V"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }
@@ -41,12 +41,12 @@ class TableStage extends Stage {
         new TableView[Titan](titanObs) {
           columns ++= List(
             new TableColumn[Titan, String] {
-              text = "Вхідні"
+              text = "Сила, F"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Titan, String] {
-              text = "Вихідні"
+              text = "Напруга, V"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }
@@ -56,12 +56,12 @@ class TableStage extends Stage {
         new TableView[Piezoceramic](tourmalineObs) {
           columns ++= List(
             new TableColumn[Piezoceramic, String] {
-              text = "Вхідні"
+              text = "Сила, F"
               cellValueFactory = input => input.value.inputVal
               prefWidth = 100
             },
             new TableColumn[Piezoceramic, String] {
-              text = "Вихідні"
+              text = "Напруга, V"
               cellValueFactory = output => output.value.outputVal
               prefWidth = 100
             }

@@ -1,12 +1,14 @@
 package components
 
 import math.Math._
-import stages.TableStage
+import stages.{ChartStage, TableStage}
 import utils.Implicits._
 import utils.Piezomodule._
 import utils.RichDouble.DoubleExpansion
 import utils.{Choices, Piezoceramic, Quartz, Titan}
 
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control._
@@ -20,10 +22,13 @@ object Components {
 
   type Pair = (Double, Double)
 
-  val quartzArr: ObservableBuffer[Quartz] = ObservableBuffer[Quartz]()
-  val piezoceramicArr: ObservableBuffer[Piezoceramic] = ObservableBuffer[Piezoceramic]()
-  val titanArr: ObservableBuffer[Titan] = ObservableBuffer[Titan]()
+  val quartzTable: ObservableBuffer[Quartz] = ObservableBuffer[Quartz]()
+  val piezoceramicTable: ObservableBuffer[Piezoceramic] = ObservableBuffer[Piezoceramic]()
+  val titanTable: ObservableBuffer[Titan] = ObservableBuffer[Titan]()
 
+  val quartzChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+  val piezoceramicChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
+  val titanChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
 
 //  /**
 //    * Pressure slider
@@ -82,14 +87,23 @@ object Components {
 
   slider.value.onChange((_, _, newValue) => {
     val module = piezimodule(Choices.withName(choiceBox.selectionModel().selectedItem.get()))
+
     val inputValue = newValue.doubleValue
     val outputValue = voltage(module, inputValue)
+
     val forTable = outputValue
+    val pair = (inputValue, outputValue)
 
     module match {
-      case `quartzModule` => quartzArr += new Quartz(inputValue, forTable)
-      case `titanModule` => titanArr += new Titan(inputValue, forTable)
-      case `piezoceramicModule` => piezoceramicArr += new Piezoceramic(inputValue, forTable)
+      case `quartzModule` =>
+        quartzTable += new Quartz(inputValue, forTable)
+        quartzChart += pair
+      case `titanModule` =>
+        titanTable += new Titan(inputValue, forTable)
+        titanChart += pair
+      case `piezoceramicModule` =>
+        piezoceramicTable += new Piezoceramic(inputValue, forTable)
+        piezoceramicChart += pair
     }
 
     resultTextFiled.setText(outputValue.roundDouble)
@@ -109,24 +123,14 @@ object Components {
   }
 
   val choiceBox = new ChoiceBox[String] {
-    maxWidth = 100
+    maxWidth = 75
     maxHeight = 30
     items = ObservableBuffer(Choices.QUARTZ, Choices.TITAN, Choices.PIEZOCARAMIC)
     selectionModel().selectFirst()
-    selectionModel().selectedItem.onChange(
-      (_, _, newValue) => Choices.withName(newValue) match {
-        case Choices.QUARTZ =>
-          resultTextFiled.setText(voltage(quartzModule, slider.value()).roundDouble)
-        case Choices.TITAN =>
-          resultTextFiled.setText(voltage(titanModule, slider.value()).roundDouble)
-        case Choices.PIEZOCARAMIC =>
-          resultTextFiled.setText(voltage(piezoceramicModule, slider.value()).roundDouble)
-      }
-    )
+    selectionModel().selectedItem.onChange((_, _, _) => slider.value = 0.0)
   }
 
   val choiceBoxPanel = new Pane {
-//    children = Seq(choiceBox, temperature, pressure)
     children = Seq(choiceBox)
   }
 
@@ -145,19 +149,25 @@ object Components {
 //            children = Seq(label("Тиск"), pressure)
 //          })
 //      },
-      new Button("Таблиця результатів") {
+      new Button("Таблиця") {
         onAction = handle(new TableStage().showAndWait())
       },
-      new Button("Очистити дані") {
+      new Button("Графік") {
+        onAction = handle(new ChartStage().showAndWait())
+      },
+      new Button("Оновити") {
         onAction = handle({
-          quartzArr.clear()
-          piezoceramicArr.clear()
-          titanArr.clear()
+          quartzTable.clear()
+          piezoceramicTable.clear()
+          titanTable.clear()
+          quartzChart.clear()
+          piezoceramicChart.clear()
+          titanChart.clear()
         })
       })
   }
 
-  val imageView = new ImageView("2.png")
+  val imageView = new ImageView("image.png")
 
   def label(text: String) = new Label(text)
 
@@ -165,7 +175,6 @@ object Components {
     case Choices.QUARTZ => quartzModule
     case Choices.PIEZOCARAMIC => piezoceramicModule
     case Choices.TITAN => titanModule
-    case _ => 1.0
   }
 
 //  private def getTemperature(value: Double): Double = value match {
