@@ -13,6 +13,7 @@ import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control._
 import scalafx.scene.image.ImageView
+import scalafx.scene.input.KeyCombination
 import scalafx.scene.layout.{Pane, VBox}
 /**
   * Created by faiaz on 18.12.16.
@@ -136,38 +137,32 @@ object Components {
 
   val vbox = new VBox {
     spacing = 5
-    children = Seq(
-      choiceBox,
-//      new HBox {
-//        padding = Insets(20)
-//        spacing = 5
-//        children = Seq(
-//          new VBox {
-//            children = Seq(label("Температура"), temperature)
-//          },
-//          new VBox {
-//            children = Seq(label("Тиск"), pressure)
-//          })
-//      },
-      new Button("Таблиця") {
-        onAction = handle(new TableStage().showAndWait())
-      },
-      new Button("Графік") {
-        onAction = handle(new ChartStage().showAndWait())
-      },
-      new Button("Оновити") {
-        onAction = handle({
-          quartzTable.clear()
-          piezoceramicTable.clear()
-          titanTable.clear()
-          quartzChart.clear()
-          piezoceramicChart.clear()
-          titanChart.clear()
-        })
-      })
+    children = Seq(choiceBox)
   }
 
   val imageView = new ImageView("image.png")
+
+  val menuBer = new MenuBar {
+    autosize()
+    menus = List(
+      new Menu("Допоміжні") {
+        items = List(
+          new MenuItem("Графік") {
+            onAction = handle(new ChartStage().showAndWait())
+            accelerator = KeyCombination.keyCombination("Alt + G")
+          },
+          new MenuItem("Таблиця") {
+            onAction = handle(new TableStage().showAndWait())
+            accelerator = KeyCombination.keyCombination("Alt + T")
+          },
+          new MenuItem("Оновити") {
+            onAction = handle(reset)
+            accelerator = KeyCombination.keyCombination("Alt + O")
+          }
+        )
+      }
+    )
+  }
 
   def label(text: String) = new Label(text)
 
@@ -175,6 +170,15 @@ object Components {
     case Choices.QUARTZ => quartzModule
     case Choices.PIEZOCARAMIC => piezoceramicModule
     case Choices.TITAN => titanModule
+  }
+
+  private def reset = {
+    quartzTable.clear()
+    piezoceramicTable.clear()
+    titanTable.clear()
+    quartzChart.clear()
+    piezoceramicChart.clear()
+    titanChart.clear()
   }
 
 //  private def getTemperature(value: Double): Double = value match {
