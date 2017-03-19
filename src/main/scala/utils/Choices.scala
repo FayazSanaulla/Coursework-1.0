@@ -24,17 +24,17 @@ object Environment {
 }
 
 class Quartz(input: Double, output: Double) {
-  val inputVal = new StringProperty(this, "input" , input.toString)
-  val outputVal = new StringProperty(this, "output", output.toString)
+  final val inputVal = new StringProperty(this, "input" , input.toString)
+  final val outputVal = new StringProperty(this, "output", output.toString)
 }
 class Titan(input: Double, output: Double) {
-  val inputVal = new StringProperty(this, "input" , input.toString)
-  val outputVal = new StringProperty(this, "output", output.toString)
+  final val inputVal = new StringProperty(this, "input" , input.toString)
+  final val outputVal = new StringProperty(this, "output", output.toString)
 }
 
 class Piezoceramic(input: Double, output: Double) {
-  val inputVal = new StringProperty(this, "input" , input.toString)
-  val outputVal = new StringProperty(this, "output", output.toString)
+  final val inputVal = new StringProperty(this, "input" , input.toString)
+  final val outputVal = new StringProperty(this, "output", output.toString)
 }
 
 

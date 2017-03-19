@@ -1,7 +1,8 @@
 package stages
 
+import components.Images.principeSchema
+
 import scalafx.scene.Scene
-import scalafx.scene.image.ImageView
 import scalafx.stage.Stage
 
 /**
@@ -9,6 +10,6 @@ import scalafx.stage.Stage
   */
 class SchemaStage extends Stage {
   scene = new Scene {
-    content = new ImageView("piezo.png")
+    content = principeSchema
   }
 }

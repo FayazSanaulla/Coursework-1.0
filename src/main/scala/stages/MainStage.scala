@@ -1,6 +1,7 @@
 package stages
 
 import components.Components._
+import components.Images.functionalSchema
 
 import scalafx.application.JFXApp
 import scalafx.geometry.Pos
@@ -34,7 +35,7 @@ object MainStage extends JFXApp {
           add(vbox, 5, 2)
 
           add(label("Схематичне зображення"), 10, 1)
-          add(imageView, 10, 2)
+          add(functionalSchema, 10, 2)
 
           add(label("Вихідна напруга, B"), 12, 14)
           add(resultTextFiled, 12, 15)

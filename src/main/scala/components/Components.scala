@@ -11,11 +11,10 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 import scalafx.scene.image.ImageView
 import scalafx.scene.input.KeyCombination
-import scalafx.scene.layout.{Pane, VBox}
+import scalafx.scene.layout.VBox
 /**
   * Created by faiaz on 18.12.16.
   */
@@ -91,8 +90,6 @@ object Components {
     spacing = 5
     children = Seq(choiceBox)
   }
-
-  var imageView = new ImageView("image.png")
 
   val menuBer = new MenuBar {
     autosize()
