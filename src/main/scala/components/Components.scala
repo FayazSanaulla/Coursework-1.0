@@ -1,7 +1,7 @@
 package components
 
 import math.Math._
-import stages.{ChartStage, TableStage}
+import stages.{ChartStage, SchemaStage, TableStage}
 import utils.Implicits._
 import utils.Piezomodule._
 import utils.RichDouble.DoubleExpansion
@@ -11,6 +11,7 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scalafx.Includes._
 import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.control._
 import scalafx.scene.image.ImageView
 import scalafx.scene.input.KeyCombination
@@ -27,54 +28,9 @@ object Components {
   val piezoceramicTable: ObservableBuffer[Piezoceramic] = ObservableBuffer[Piezoceramic]()
   val titanTable: ObservableBuffer[Titan] = ObservableBuffer[Titan]()
 
-  val quartzChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
-  val piezoceramicChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
-  val titanChart: ArrayBuffer[(Double, Double)] = mutable.ArrayBuffer[Pair]()
-
-//  /**
-//    * Pressure slider
-//    */
-//  val pressure = new Slider(0, 50, 0) {
-//    minorTickCount = 4
-//    showTickLabels = true
-//    showTickMarks = true
-//    orientation = Orientation.Vertical
-//  }
-//
-//  pressure.value.onChange((_, _, newValue) => {
-//    if (slider.value() == 0.0) resultTextFiled.setText("0.00")
-//    else {
-//      resultTextFiled.setText((
-//        getPressure(newValue.doubleValue) *
-//          soundPower(slider.value()) *
-//          getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-//          getTemperature(temperature.value()))
-//        .toString.roundingString)
-//
-//    }
-//  })
-
-//  /**
-//    * Temperature slider
-//    */
-//  val temperature = new Slider(0, 100, 0) {
-//    minorTickCount = 4
-//    showTickLabels = true
-//    showTickMarks = true
-//    orientation = Orientation.Vertical
-//  }
-//
-//  temperature.value.onChange((_, _, newValue) => {
-//    if (slider.value() == 0.0) resultTextFiled.setText("0.00")
-//    else {
-//      resultTextFiled.setText((
-//        getTemperature(newValue.doubleValue) *
-//          soundPower(slider.value()) *
-//          getCoefficient(Choices.withName(choiceBox.selectionModel().selectedItem.get())) *
-//          getPressure(pressure.value()))
-//        .toString.roundingString)
-//    }
-//  })
+  val quartzChart: ArrayBuffer[Pair] = mutable.ArrayBuffer[Pair]()
+  val piezoceramicChart: ArrayBuffer[Pair] = mutable.ArrayBuffer[Pair]()
+  val titanChart: ArrayBuffer[Pair] = mutable.ArrayBuffer[Pair]()
 
   /**
     * Power slider
@@ -131,21 +87,17 @@ object Components {
     selectionModel().selectedItem.onChange((_, _, _) => slider.value = 0.0)
   }
 
-  val choiceBoxPanel = new Pane {
-    children = Seq(choiceBox)
-  }
-
   val vbox = new VBox {
     spacing = 5
     children = Seq(choiceBox)
   }
 
-  val imageView = new ImageView("image.png")
+  var imageView = new ImageView("image.png")
 
   val menuBer = new MenuBar {
     autosize()
     menus = List(
-      new Menu("Допоміжні") {
+      new Menu("Побудова") {
         items = List(
           new MenuItem("Графік") {
             onAction = handle(new ChartStage().showAndWait())
@@ -160,6 +112,27 @@ object Components {
             accelerator = KeyCombination.keyCombination("Alt + O")
           }
         )
+      },
+      new Menu("Схеми") {
+        items = List(
+          new MenuItem("Схема принципова") {
+            onAction = handle(new SchemaStage().showAndWait())
+            accelerator = KeyCombination.keyCombination("Alt + S")
+          }
+        )
+      }
+    )
+  }
+
+  val tabPane = new TabPane {
+    tabs = Seq(
+      new Tab {
+        text = "Схема 1"
+        closable = false
+      },
+      new Tab {
+        text = "Схема 2"
+        closable = false
       }
     )
   }
@@ -180,21 +153,4 @@ object Components {
     piezoceramicChart.clear()
     titanChart.clear()
   }
-
-//  private def getTemperature(value: Double): Double = value match {
-//    case value: Double if value >= 0.0 && value <= 70.0 => 1.0
-//    case value: Double if value > 70.0 && value <= 75.0 => 0.95
-//    case value: Double if value > 75.0 && value <= 80.0 => 0.9
-//    case value: Double if value > 80.0 && value <= 85.0 => 0.85
-//    case value: Double if value > 85.0 && value <= 90.0 => 0.8
-//    case _ => 0.7
-//  }
-//
-//  private def getPressure(value: Double): Double = value match {
-//    case value: Double if value >= 0.0 && value < 30.0 => 1.0
-//    case value: Double if value >= 30.0 && value < 35.0 => 0.9
-//    case value: Double if value >= 35.0 && value < 40.0 => 0.8
-//    case value: Double if value >= 45.0 && value <= 50.0 => 0.7
-//    case _ => 0.7
-//  }
 }
