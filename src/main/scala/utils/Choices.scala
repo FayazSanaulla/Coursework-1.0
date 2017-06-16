@@ -10,7 +10,7 @@ object Choices extends Enumeration {
   type Choice = Value
   val TITAN = Value("Титанат Барію")
   val QUARTZ = Value("Кварц")
-  val PIEZOCARAMIC = Value("Пєзокераміка")
+  val PIEZOCARAMIC = Value("П'єзокераміка")
 }
 
 object Piezomodule {
