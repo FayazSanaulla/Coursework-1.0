@@ -4,7 +4,7 @@ scalaVersion := "2.11.8"
 
 packageName in Docker := "course_work"
 version in Docker := "latest"
-dockerRepository := Some("faiaz")
+//dockerRepository := Some("faiaz")
 
 enablePlugins(JavaAppPackaging)
 
