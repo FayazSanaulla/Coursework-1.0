@@ -10,5 +10,5 @@ after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     sbt docker:publish
 #    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push faiaz/scalastics:latest;
+#    docker push faiaz/scalastics:latest;
     fi
